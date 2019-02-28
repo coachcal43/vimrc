@@ -93,6 +93,15 @@ set backspace=indent,eol,start
 set ruler
 set guioptions+=F
 set complete=.,w,b,u
+" show invisibles
+set list
+set listchars=
+set listchars+=tab:·\ 
+set listchars+=trail:·
+set listchars+=extends:»
+set listchars+=precedes:«
+set listchars+=nbsp:░
+"
 set wildmode=longest,list,full
 set wildmenu
 " match Todo /\s\+$/
