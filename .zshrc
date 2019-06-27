@@ -66,6 +66,7 @@ plugins=(git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
+source ~/.bash_profile
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -95,33 +96,3 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
-
-# Ported from bashrc
-alias tn="tmux -CC" # new tmux instance - iterm2
-alias tt="tmux -CC attach -t"
-alias ll="ls -lhart"
-
-alias ubu="ssh calvin@10.10.100.29 -p4313"
-alias loc="ssh -X -p 3022 cal@127.0.0.1"
-alias nuc="ssh -X calnuc@10.10.100.205"
-alias home="ssh calvin@192.168.1.98 -p4313"
-alias pc="ssh anduril@10.11.228.1"
-alias 9f="ssh anduril@10.11.159.1"
-alias 8b="ssh anduril@10.11.11.1"
-alias 8e="ssh anduril@10.11.142.1"
-alias a3="ssh anduril@10.11.163.1"
-alias c4="ssh anduril@10.11.196.1"
-alias 9a="ssh anduril@10.11.154.1"
-alias 4a="ssh anduril@10.11.74.1"
-alias 7f="ssh anduril@10.11.127.1"
-alias 1c="ssh anduril@10.11.28.1"
-alias c4="ssh anduril@10.11.196.1"
-alias 5a="ssh anduril@10.11.90.1"
-alias 1b="ssh anduril@10.11.27.1"
-#alias newpc="ssh anduril@10.10.100.53"
-#alias newpc="ssh anduril@10.10.100.83"
-alias newpc="ssh anduril@10.10.100.225"
-alias dispatch="ssh anduril@dispatch.lonestar.anduril.io"
-
-# Affects build times when working outside Anduril build tree 
-export NIX_PATH=nixpkgs=/home/calvin/anduril/anduril-nixpkgs/:ssh-config-file=/home/calvin/.ssh/config

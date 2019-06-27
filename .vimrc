@@ -15,11 +15,12 @@ let g:lsc_auto_map = {
     \ 'ShowHover': 'K',
     \ 'Completion': 'completefunc',
      \}
-let mapleader = "-"
+let mapleader = ","
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'kien/ctrlp'
+Plug 'lyuts/vim-rtags'
+Plug 'https://github.com/kien/ctrlp.vim'
 Plug 'wvffle/vimterm'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-dispatch'
@@ -61,6 +62,7 @@ Plug 'ap/vim-buftabline'
 call plug#end()
 
 " autocmd vimenter * NERDTree
+" autocmd BufWritePost
 autocmd bufnewfile *.it so /users/anikvyas/swift_template.txt
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -93,15 +95,6 @@ set backspace=indent,eol,start
 set ruler
 set guioptions+=F
 set complete=.,w,b,u
-" show invisibles
-set list
-set listchars=
-set listchars+=tab:·\ 
-set listchars+=trail:·
-set listchars+=extends:»
-set listchars+=precedes:«
-set listchars+=nbsp:░
-"
 set wildmode=longest,list,full
 set wildmenu
 " match Todo /\s\+$/
@@ -126,7 +119,7 @@ let g:airline#extensions#tabline#enabled = 2
 
 " This allows buffers to be hidden if you've modified a buffer.
 " This is almost a must if you wish to use buffers in this way.
-" set hidden
+set hidden
 
 " To open a new empty buffer
 " This replaces :tabnew which I used to bind to this mapping
@@ -144,6 +137,8 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
+
+nmap <leader>m !run_tests<CR>
 
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 match OverLength /\%80v.\+/
