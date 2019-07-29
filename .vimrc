@@ -4,10 +4,10 @@ set runtimepath^=~/.vim/plugin/
 
 let g:lsc_server_commands = {'lua': 'lua-lsp', 'it': 'lua-lsp'}
 let g:lsc_trace_level = 'verbose'
-let g:lsc_autoStart = 1 
+let g:lsc_autoStart = 1
 let g:lsc_enable_autocomplete = v:true
 let g:lsc_auto_map = v:true
-let g:lsc_auto_map = { 
+let g:lsc_auto_map = {
     \ 'GoToDefinition': '<C-]>',
     \ 'FindReferences': 'gr',
     \ 'FindCodeActions': 'ga',
@@ -25,6 +25,13 @@ Plug 'wvffle/vimterm'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-dispatch'
 Plug 'natebosch/vim-lsc'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+Plug 'google/vim-glaive'
+Plug 'tpope/vim-fugitive'
+Plug 'LnL7/vim-nix'
+Plug 'vim-syntastic/syntastic'
 "Plug 'Valloric/YouCompleteMe'
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
@@ -148,7 +155,7 @@ match OverLength /\%80v.\+/
 " Setup some default ignores
 let g:ctrlp_custom_ignore = {
    \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+   \ 'file': '\v\.(nix|exe|so|dll|class|png|jpg|jpeg)$',
 \}
 
 " Use a leader instead of the actual named binding
@@ -158,3 +165,32 @@ nmap <leader>p :CtrlP<cr>
 nmap <leader>bb :CtrlPBuffer<cr>
 nmap <leader>bm :CtrlPMixed<cr>
 nmap <leader>bs :CtrlPMRU<cr>
+
+" Anduril stuff
+call glaive#Install()
+
+augroup autoformat_settings
+    autocmd!
+    autocmd FileType cpp AutoFormatBuffer
+augroup END
+
+Glaive codefmt
+    \ plugin[mappings]=',='
+    \ clang_format_executable='/nix/store/ncxn8iw8qh8aca0r51cnfb9myk4mcn44-clang-8.0.0/bin/clang-format'
+    \ clang_format_style='file'
+
+map <C-j> :w <CR> :!cat % \| jq . \| tee % <CR> :e <CR>
+map <C-w> :w <CR> :! $(clang-tidy -fix-errors % -- -std=c++17 -x c++) <CR> :e <CR>
+map <C-a> 1Gi//<CR> Copyright 2019 Anduril Industries<CR><CR><Bs><Bs><Bs><CR><Esc>
+
+set tabstop=4
+set softtabstop=4
+set expandtab
+set shiftwidth=4
+set shiftwidth=4
+set smarttab
+set textwidth=0
+
+autocmd BufWritePre * :%s/\s\+$//e
+
+nmap <F1> :if expand('%:e')=='hh'<CR>e %:r.cc<CR>else<CR>e %:r.hh<CR>endif<CR><CR>
