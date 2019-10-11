@@ -1,13 +1,14 @@
 " execute pathogen#infect()
 
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 set runtimepath^=~/.vim/plugin/
 
 let g:lsc_server_commands = {'lua': 'lua-lsp', 'it': 'lua-lsp'}
 let g:lsc_trace_level = 'verbose'
-let g:lsc_autoStart = 1
+let g:lsc_autoStart = 1 
 let g:lsc_enable_autocomplete = v:true
 let g:lsc_auto_map = v:true
-let g:lsc_auto_map = {
+let g:lsc_auto_map = { 
     \ 'GoToDefinition': '<C-]>',
     \ 'FindReferences': 'gr',
     \ 'FindCodeActions': 'ga',
@@ -19,20 +20,11 @@ let mapleader = ","
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'lyuts/vim-rtags'
-Plug 'https://github.com/kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 Plug 'wvffle/vimterm'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-dispatch'
 Plug 'natebosch/vim-lsc'
-Plug 'ycm-core/YouCompleteMe'
-Plug 'google/vim-maktaba'
-Plug 'google/vim-codefmt'
-Plug 'google/vim-glaive'
-Plug 'tpope/vim-fugitive'
-Plug 'LnL7/vim-nix'
-Plug 'vim-syntastic/syntastic'
-"Plug 'Valloric/YouCompleteMe'
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
@@ -66,10 +58,15 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'ap/vim-buftabline'
 
+Plug 'mileszs/ack.vim'
+
+Plug 'ivan-cukic/vim-ctrlp-cscope'
+
+Plug 'chazy/cscope_maps'
+
 call plug#end()
 
 " autocmd vimenter * NERDTree
-" autocmd BufWritePost
 autocmd bufnewfile *.it so /users/anikvyas/swift_template.txt
 " autocmd StdinReadPre * let s:std_in=1
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -117,8 +114,6 @@ else
     let Tlist_Ctags_Cmd='/usr/cisco/bin/ctags'
 endif
 
-nmap <leader>t :CCTreeTraceForward<CR>
-
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 2
 " " Show just the filename
@@ -138,6 +133,14 @@ nmap <leader>l :bnext<CR>
 " Move to the previous buffer
 nmap <leader>h :bprevious<CR>
 
+" ctags
+nmap <leader>ct :!ctags -R .<CR>
+
+" Ack
+" nmap <leader>ak :Ack 
+" nnoremap <buffer> <leader>ak :Ack SomeFunc(input('Param: '))<CR>
+
+
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
 nmap <leader>bq :bp <BAR> bd #<CR>
@@ -145,52 +148,26 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 " Show all open buffers and their status
 nmap <leader>bl :ls<CR>
 
-nmap <leader>m !run_tests<CR>
-
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%80v.\+/
+match OverLength /\%8000v.\+/
 :com! -nargs=? T tabedit <args>
 
 " CtrlP - mappings
 " Setup some default ignores
 let g:ctrlp_custom_ignore = {
    \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-   \ 'file': '\v\.(nix|exe|so|dll|class|png|jpg|jpeg)$',
+   \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
 \}
 
 " Use a leader instead of the actual named binding
 nmap <leader>p :CtrlP<cr>
+nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 " Easy bindings for its various modes
 nmap <leader>bb :CtrlPBuffer<cr>
 nmap <leader>bm :CtrlPMixed<cr>
 nmap <leader>bs :CtrlPMRU<cr>
 
-" Anduril stuff
-call glaive#Install()
-
-augroup autoformat_settings
-    autocmd!
-    autocmd FileType cpp AutoFormatBuffer
-augroup END
-
-Glaive codefmt
-    \ plugin[mappings]=',='
-    \ clang_format_executable='/nix/store/ncxn8iw8qh8aca0r51cnfb9myk4mcn44-clang-8.0.0/bin/clang-format'
-    \ clang_format_style='file'
-
-map <C-j> :w <CR> :!cat % \| jq . \| tee % <CR> :e <CR>
-map <C-w> :w <CR> :! $(clang-tidy -fix-errors % -- -std=c++17 -x c++) <CR> :e <CR>
-map <C-a> 1Gi//<CR> Copyright 2019 Anduril Industries<CR><CR><Bs><Bs><Bs><CR><Esc>
-
-set tabstop=4
-set softtabstop=4
-set expandtab
-set shiftwidth=4
-set shiftwidth=4
-set smarttab
-set textwidth=0
-
-autocmd BufWritePre * :%s/\s\+$//e
-
-nmap <F1> :if expand('%:e')=='hh'<CR>e %:r.cc<CR>else<CR>e %:r.hh<CR>endif<CR><CR>
+" cscope
+nmap <leader>cs :CtrlPCScopeSymbol<cr>
