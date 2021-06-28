@@ -3,28 +3,37 @@
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 set runtimepath^=~/.vim/plugin/
 
-let g:lsc_server_commands = {'lua': 'lua-lsp', 'it': 'lua-lsp'}
-let g:lsc_trace_level = 'verbose'
-let g:lsc_autoStart = 1 
-let g:lsc_enable_autocomplete = v:true
-let g:lsc_auto_map = v:true
-let g:lsc_auto_map = { 
-    \ 'GoToDefinition': '<C-]>',
-    \ 'FindReferences': 'gr',
-    \ 'FindCodeActions': 'ga',
-    \ 'DocumentSymbol': 'go',
-    \ 'ShowHover': 'K',
-    \ 'Completion': 'completefunc',
-     \}
+set completefunc=RtagsCompleteFunc
+
 let mapleader = ","
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin('~/.vim/bundle/')
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Plugin 'ycm-core/YouCompleteMe'
+
+Plugin 'lyuts/vim-rtags'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+
+" let g:ycm_global_ycm_extra_conf = '/home/calvin/.ycm_extra_conf.py'
 
 call plug#begin('~/.vim/plugged')
 
+" Plug 'ycm-core/YouCompleteMe'
+Plug 'neovimhaskell/haskell-vim'
 Plug 'kien/ctrlp.vim'
 Plug 'wvffle/vimterm'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-dispatch'
-Plug 'natebosch/vim-lsc'
+" Plug 'natebosch/vim-lsc'
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
@@ -60,9 +69,11 @@ Plug 'ap/vim-buftabline'
 
 Plug 'mileszs/ack.vim'
 
-Plug 'ivan-cukic/vim-ctrlp-cscope'
+" Plug 'davidhalter/jedi-vim'
 
-Plug 'chazy/cscope_maps'
+" Plug 'ivan-cukic/vim-ctrlp-cscope'
+
+" Plug 'chazy/cscope_maps'
 
 call plug#end()
 
@@ -102,17 +113,12 @@ set complete=.,w,b,u
 set wildmode=longest,list,full
 set wildmenu
 " match Todo /\s\+$/
-set tags=./tags,tags,/vob/ios/sys/tags,/vob/ios/sys/TAGS
+" set tags=./tags,tags,/vob/ios/sys/tags,/vob/ios/sys/TAGS
+set tags=./tags,tags;$HOME
 map <S-Insert> <MiddleMouse>
 map! <S-Insert> <MiddleMouse>
 set dictionary+=/usr/share/lib/dict/words
 set path+=/vob/ios
-" Taglist plugin mappings
-if $OSTYPE == "linux"
-    let Tlist_Ctags_Cmd='/users/yega/tools/ctags/linux/bin/ctags'
-else
-    let Tlist_Ctags_Cmd='/usr/cisco/bin/ctags'
-endif
 
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 2
@@ -135,6 +141,11 @@ nmap <leader>h :bprevious<CR>
 
 " ctags
 nmap <leader>ct :!ctags -R .<CR>
+
+" path to directory where library can be found
+" let g:clang_library_path='/usr/lib/llvm-3.8/lib'
+" or path directly to the library file
+let g:clang_library_path='/nix/store/8a3l4j4w35w9wkas3f8aq4c8fsaw4kpk-clang-8.0.0-lib/lib/'
 
 " Ack
 " nmap <leader>ak :Ack 
@@ -171,3 +182,5 @@ nmap <leader>bs :CtrlPMRU<cr>
 
 " cscope
 nmap <leader>cs :CtrlPCScopeSymbol<cr>
+
+let g:rtagsRcCmd = '$CMAKE_INCLUDE_PATH'
